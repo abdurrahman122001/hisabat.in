@@ -1,0 +1,35 @@
+# Disable Directory Browsing
+Options -Indexes
+php_value max_input_vars 3000
+
+# Prefer serving the React UI at /hesabat/ (without /ui in the URL)
+DirectoryIndex ui/index.html index.php
+
+# Protect .htaccess file itself
+<Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Block access to sensitive files
+<FilesMatch "\.(env|ini|log|sh|bak|sql|json|xml|config)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+RewriteEngine On
+
+# Map root assets path to the actual build folder (ui/assets) without exposing /ui in the URL
+RewriteRule ^assets/(.*)$ ui/assets/$1 [L]
+
+# Keep API and PHP endpoints working
+RewriteRule ^api/ - [L]
+RewriteRule \.php$ - [L]
+
+# If the requested resource exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# SPA fallback: route everything else to the built React app
+RewriteRule ^ ui/index.html [L]

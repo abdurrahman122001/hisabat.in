@@ -1,0 +1,140 @@
+.modern-shell {
+  --ms-bg: #f8fafc;
+  --ms-surface: rgba(255, 255, 255, 0.85);
+  --ms-border: rgba(15, 23, 42, 0.08);
+  --ms-sidebar: #0f172a;
+  --ms-sidebar-border: rgba(148, 163, 184, 0.18);
+  --ms-sidebar-text: #cbd5e1;
+  --ms-sidebar-text-active: #ffffff;
+  --ms-accent: #4f46e5;
+  --ms-accent-soft: rgba(79, 70, 229, 0.12);
+  --ms-text: #0f172a;
+  --ms-muted: #64748b;
+}
+
+.modern-shell body {
+  background: var(--ms-bg);
+}
+
+/* Top navbar */
+.modern-shell .navbar.fixed-top {
+  background: var(--ms-surface) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--ms-border) !important;
+}
+
+.modern-shell .navbar .navbar-menu-wrapper {
+  background: transparent !important;
+}
+
+/* Sidebar */
+.modern-shell .sidebar {
+  background: var(--ms-sidebar) !important;
+  border-right: 1px solid var(--ms-sidebar-border) !important;
+}
+
+.modern-shell .sidebar .nav {
+  background: transparent !important;
+  padding: 16px 12px;
+}
+
+.modern-shell .sidebar .nav .nav-item {
+  margin: 2px 0;
+}
+
+.modern-shell .sidebar .nav .nav-link {
+  border-radius: 12px;
+  color: var(--ms-sidebar-text) !important;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.modern-shell .sidebar .nav .nav-link:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--ms-sidebar-text-active) !important;
+}
+
+.modern-shell .sidebar .nav .nav-link.active {
+  background: var(--ms-accent) !important;
+  color: var(--ms-sidebar-text-active) !important;
+  box-shadow: 0 10px 18px rgba(79, 70, 229, 0.22);
+}
+
+.modern-shell .sidebar .nav .nav-link .menu-title {
+  font-weight: 600;
+}
+
+/* Content wrapper */
+.modern-shell .main-panel {
+  background: transparent !important;
+}
+
+.modern-shell .content-wrapper {
+  background: transparent !important;
+}
+
+/* Generic cards */
+.modern-shell .card {
+  border-radius: 18px !important;
+  border: 1px solid var(--ms-border) !important;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08) !important;
+}
+
+.modern-shell .card .card-body {
+  border-radius: 18px !important;
+}
+
+/* Inputs */
+.modern-shell .form-control,
+.modern-shell input.form-control,
+.modern-shell select.form-control,
+.modern-shell textarea.form-control {
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, 0.25) !important;
+  background: rgba(248, 250, 252, 0.9) !important;
+  color: var(--ms-text) !important;
+  font-weight: 500;
+  transition: box-shadow 150ms ease, border-color 150ms ease, background-color 150ms ease;
+}
+
+.modern-shell .form-control:focus {
+  border-color: rgba(79, 70, 229, 0.45) !important;
+  box-shadow: 0 0 0 6px rgba(79, 70, 229, 0.12) !important;
+  background: #fff !important;
+}
+
+/* Buttons */
+.modern-shell .btn {
+  border-radius: 14px !important;
+  font-weight: 700;
+}
+
+.modern-shell .btn-primary {
+  background: var(--ms-accent) !important;
+  border-color: var(--ms-accent) !important;
+  box-shadow: 0 10px 18px rgba(79, 70, 229, 0.25) !important;
+}
+
+.modern-shell .btn-primary:hover {
+  filter: brightness(0.98);
+}
+
+/* Tables */
+.modern-shell .table {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.modern-shell .table thead th {
+  background: rgba(248, 250, 252, 0.9) !important;
+  color: var(--ms-muted) !important;
+  border-bottom: 1px solid var(--ms-border) !important;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.modern-shell .table td {
+  border-top: 1px solid rgba(15, 23, 42, 0.06) !important;
+}
