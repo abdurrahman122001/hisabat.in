@@ -1,4 +1,8 @@
 <?php
+// Configure session cookie path for subdirectory installation
+$cookiePath = dirname($_SERVER['PHP_SELF']) . '/';
+if ($cookiePath === '//') $cookiePath = '/';
+session_set_cookie_params(['path' => $cookiePath]);
 session_start(); // Start the session
 
 @include(__DIR__ . '/config.php');
@@ -15,7 +19,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 session_unset();
 session_destroy();
 
-// Redirect to login page
-header("Location: login.php");
+// Redirect to login page with dynamic path
+$redirectPath = dirname($_SERVER['PHP_SELF']) . '/login.php';
+header("Location: " . $redirectPath);
 exit;
 ?>

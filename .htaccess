@@ -2,6 +2,10 @@
 Options -Indexes
 php_value max_input_vars 3000
 
+# Force UTF-8 encoding for all text content
+AddDefaultCharset UTF-8
+
+
 # Prefer serving the React UI at / (without /ui in the URL)
 DirectoryIndex ui/index.html index.php
 
@@ -22,8 +26,21 @@ RewriteEngine On
 # Map root assets path to the actual build folder (ui/assets) without exposing /ui in the URL
 RewriteRule ^assets/(.*)$ ui/assets/$1 [L]
 
-# Keep API and PHP endpoints working
-RewriteRule ^api/ - [L]
+# Map hesabat/assets to deploy_hesabat_root/assets
+RewriteRule ^hesabat/assets/(.*)$ deploy_hesabat_root/assets/$1 [L]
+
+# Keep API and PHP endpoints working (both root and hesabat subdirectory)
+# First check if API file exists at root - if yes, serve it
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteCond %{DOCUMENT_ROOT}/api/$1 -f
+RewriteRule ^api/(.*)$ - [L]
+
+# If API file doesn't exist at root, rewrite to /hisabat.in/api/
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteRule ^api/(.*)$ /hisabat.in/api/$1 [L]
+
+# API inside hisabat folder
+RewriteRule ^hesabat/api/(.*)$ deploy_hesabat_root/api/$1 [L]
 RewriteRule \.php$ - [L]
 
 # If the requested resource exists, serve it directly

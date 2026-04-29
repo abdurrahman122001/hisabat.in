@@ -2,7 +2,14 @@
 // Shared auth helpers for API endpoints
 // Uses existing PHP session (login.php)
 
+// Configure session cookie path for subdirectory installation
 if (session_status() === PHP_SESSION_NONE) {
+    $cookiePath = dirname($_SERVER['PHP_SELF']) . '/';
+    if (strpos($cookiePath, '/api/') !== false) {
+        $cookiePath = dirname(dirname($_SERVER['PHP_SELF'])) . '/';
+    }
+    if ($cookiePath === '//') $cookiePath = '/';
+    session_set_cookie_params(['path' => $cookiePath]);
     session_start();
 }
 

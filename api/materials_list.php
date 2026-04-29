@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 @include(__DIR__ . '/../config.php');
 @include(__DIR__ . '/_auth.php');
@@ -83,7 +83,27 @@ if ($cnt === 0) {
         ('graw_orch','Graw Cut On Orch','laser',0,1)");
 }
 
-$res = mysqli_query($con, "SELECT id,mat_key,label,category,stock_margin,status FROM materials ORDER BY category ASC, id ASC");
+// Get optional printer filter from query param
+$printerFilter = isset($_GET['printer']) ? trim($_GET['printer']) : '';
+$printerCategory = '';
+
+if ($printerFilter !== '') {
+    // Look up the printer's price_key/category
+    $printerEsc = mysqli_real_escape_string($con, $printerFilter);
+    $printerRes = mysqli_query($con, "SELECT price_key FROM printers WHERE name='$printerEsc' OR price_key='$printerEsc' LIMIT 1");
+    if ($printerRes && $pRow = mysqli_fetch_assoc($printerRes)) {
+        $printerCategory = strtolower(trim($pRow['price_key'] ?? ''));
+    }
+}
+
+// Build query - filter by printer category if specified
+$sql = "SELECT id,mat_key,label,category,stock_margin,status FROM materials";
+if ($printerCategory !== '') {
+    $sql .= " WHERE category='" . mysqli_real_escape_string($con, $printerCategory) . "'";
+}
+$sql .= " ORDER BY category ASC, id ASC";
+
+$res = mysqli_query($con, $sql);
 if ($res === false) {
     http_response_code(500);
     echo json_encode(['ok' => false, 'error' => 'Query failed', 'db_error' => mysqli_error($con)]);

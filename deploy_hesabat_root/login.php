@@ -1,4 +1,8 @@
 <?php
+// Configure session cookie path for subdirectory installation
+$cookiePath = dirname($_SERVER['PHP_SELF']) . '/';
+if ($cookiePath === '//') $cookiePath = '/';
+session_set_cookie_params(['path' => $cookiePath]);
 session_start(); // Start the session to track user login
 
 include "config.php"; // Include database connection
@@ -80,7 +84,8 @@ if(isset($_POST['submit'])){
 
             session_write_close();
 
-            header("Location: /hesabat/");
+            $redirectPath = dirname($_SERVER['PHP_SELF']) . '/';
+            header("Location: " . $redirectPath);
             exit;
         }
     }
@@ -147,7 +152,8 @@ if(isset($_POST['submit'])){
 
                 session_write_close();
 
-                header("Location: /hesabat/");
+                $redirectPath = dirname($_SERVER['PHP_SELF']) . '/';
+                header("Location: " . $redirectPath);
                 exit;
             }
         }
@@ -164,7 +170,7 @@ if(isset($_POST['submit'])){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Giriş | GRI</title>
-    <link rel="shortcut icon" href="/hesabat/icon.png" />
+    <link rel="shortcut icon" href="/hisabat.in/icon.png" />
   </head>
   <style>
     :root{

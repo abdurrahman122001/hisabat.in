@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 @include(__DIR__ . '/../config.php');
 @include(__DIR__ . '/_auth.php');
@@ -644,6 +644,18 @@ $clientPrices = merge_client_price_maps(
     load_client_price_profiles($con, $client_id)
 );
 $printerKeyMap = load_printer_key_map($con);
+
+// DEBUG: Log what we loaded
+@file_put_contents(__DIR__ . '/debug_load.log', json_encode([
+    'client_id' => $client_id,
+    'client_prices_count' => count($clientPrices),
+    'client_prices_sample' => array_slice($clientPrices, 0, 2, true),
+    'printer_key_map' => $printerKeyMap,
+    'tables_exist' => [
+        'client_price_profiles' => table_exists($con, 'client_price_profiles'),
+        'printers' => table_exists($con, 'printers'),
+    ],
+], JSON_UNESCAPED_UNICODE) . "\n");
 $materialKeyMap = load_material_key_map($con);
 $materialStockMap = load_material_stock_map($con);
 $materialStockMarginMap = load_material_stock_margin_map($con);
