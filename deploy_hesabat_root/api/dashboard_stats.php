@@ -35,7 +35,7 @@ function date_expr(string $col): string
         "STR_TO_DATE($col, '%Y-%m-%d')," .
         "STR_TO_DATE($col, '%Y-%m-%d %H:%i:%s')," .
         "STR_TO_DATE($col, '%d.%m.%Y')" .
-    ")";
+        ")";
 }
 
 $monthStart = date('Y-m-01');
@@ -49,7 +49,7 @@ $active_clients = [];
 if (table_exists($con, 'clients')) {
     $resCount = mysqli_query($con, "SELECT COUNT(*) AS c FROM clients");
     $row = $resCount ? mysqli_fetch_assoc($resCount) : null;
-    $active_customers = $row ? (int)$row['c'] : 0;
+    $active_customers = $row ? (int) $row['c'] : 0;
 
     $resList = mysqli_query($con, "SELECT client_id, name, email, phone FROM clients ORDER BY client_id DESC LIMIT 10");
     if ($resList) {
@@ -97,9 +97,9 @@ if (table_exists($con, 'work')) {
         $res = mysqli_query($con, $sql);
         $r = $res ? mysqli_fetch_assoc($res) : null;
         if ($r) {
-            $monthly_works = (int)$r['work_count'];
-            $monthly_work_m2 = (float)$r['total_m2'];
-            $monthly_laser_distance_m = (float)$r['total_distance_m'];
+            $monthly_works = (int) $r['work_count'];
+            $monthly_work_m2 = (float) $r['total_m2'];
+            $monthly_laser_distance_m = (float) $r['total_distance_m'];
         }
     }
 }
@@ -109,7 +109,7 @@ $total_stock_m2 = 0.0;
 if (table_exists($con, 'in_stock')) {
     $res = mysqli_query($con, "SELECT COALESCE(SUM(sgrm),0) AS total_sgrm FROM in_stock");
     $r = $res ? mysqli_fetch_assoc($res) : null;
-    $total_stock_m2 = $r ? (float)$r['total_sgrm'] : 0.0;
+    $total_stock_m2 = $r ? (float) $r['total_sgrm'] : 0.0;
 }
 
 // 4) Monthly payments total
@@ -123,7 +123,7 @@ if (table_exists($con, 'payment')) {
          WHERE DATE($payDateExpr) BETWEEN '$ms' AND '$me'"
     );
     $r = $res ? mysqli_fetch_assoc($res) : null;
-    $monthly_payments_total = $r ? (float)$r['total_paid'] : 0.0;
+    $monthly_payments_total = $r ? (float) $r['total_paid'] : 0.0;
 }
 
 echo json_encode([

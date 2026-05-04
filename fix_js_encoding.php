@@ -20,12 +20,12 @@ $replacements = [
     // Welcome message
     'Xos g?ldiniz' => 'Xoş gəldiniz',
     'Xo? g?ldiniz' => 'Xoş gəldiniz',
-    
+
     // Customer related
     'M?st?ri' => 'Müştəri',
     'Mst?ri' => 'Müştəri',
     'Müst?ri' => 'Müştəri',
-    
+
     // Other common words
     'd?nis' => 'Ödəniş',
     '?d?nis' => 'Ödəniş',
@@ -34,7 +34,7 @@ $replacements = [
     'Qaliq borc' => 'Qalıq borc',
     'Qaliq b?rc' => 'Qalıq borc',
     'Avans' => 'Avans', // Usually OK
-    
+
     // Menu items from screenshot
     '?s?rl?ri t?l?b?t' => 'İşləri tələbat',
     '?s ?lav? et' => 'İş əlavə et',
@@ -46,13 +46,13 @@ $replacements = [
     'M?d?n siyahisi' => 'Məhsul siyahısı',
     'Silinm? tar?x?l?ri' => 'Silinmə tarixləri',
     'Settings' => 'Settings', // Keep English
-    
+
     // Dashboard labels
     'Aktiv M?st?ril?r' => 'Aktiv Müştərilər',
     'Ayl?q ??l?r' => 'Aylıq İşlər',
     'Anbar' => 'Anbar',
     'Ayl?q ?d?ni?l?r' => 'Aylıq Ödənişlər',
-    
+
     // Other UI strings
     'M?st?ri tapilmadi' => 'Müştəri tapılmadı',
     'Server? qo?ulmaq olmadi' => 'Serverə qoşulmaq olmadı',
@@ -76,12 +76,13 @@ $badCount = substr_count($content, $replacementChar);
 if ($badCount > 0) {
     echo "\nWARNING: Still found $badCount replacement characters () in file.\n";
     echo "Some characters couldn't be automatically fixed.\n";
-    
+
     // Show context around remaining bad characters
     $pos = 0;
     for ($i = 0; $i < min(5, $badCount); $i++) {
         $pos = strpos($content, $replacementChar, $pos);
-        if ($pos === false) break;
+        if ($pos === false)
+            break;
         $context = substr($content, max(0, $pos - 30), 60);
         echo "  Context: ...$context...\n";
         $pos++;
@@ -94,7 +95,7 @@ if ($fixedCount > 0 || $badCount > 0) {
     $backupFile = $jsFile . '.backup.' . date('YmdHis');
     copy($jsFile, $backupFile);
     echo "\nBackup created: $backupFile\n";
-    
+
     // Write fixed content with UTF-8 BOM to ensure proper encoding
     $result = file_put_contents($jsFile, "\xEF\xBB\xBF" . $content);
     if ($result !== false) {

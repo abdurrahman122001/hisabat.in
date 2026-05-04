@@ -2,20 +2,35 @@
 // Shared auth helpers for API endpoints
 // Uses existing PHP session (login.php)
 
-// Configure session cookie path for subdirectory installation
+// Configure session cookie path
 if (session_status() === PHP_SESSION_NONE) {
-    $cookiePath = dirname($_SERVER['PHP_SELF']) . '/';
-    if (strpos($cookiePath, '/api/') !== false) {
-        $cookiePath = dirname(dirname($_SERVER['PHP_SELF'])) . '/';
+    // Robust cookie path detection matching login.php logic
+    $cookiePath = '/';
+    $phpSelf = $_SERVER['PHP_SELF'] ?? '';
+    
+    // If the URL contains /api/, the root is everything before /api/
+    $apiPos = strpos($phpSelf, '/api/');
+    if ($apiPos !== false) {
+        $cookiePath = substr($phpSelf, 0, $apiPos) . '/';
+    } else {
+        $cookiePath = dirname($phpSelf) . '/';
     }
-    if ($cookiePath === '//') $cookiePath = '/';
-    session_set_cookie_params(['path' => $cookiePath]);
+    
+    if ($cookiePath === '//' || $cookiePath === './' || $cookiePath === '.\\') {
+        $cookiePath = '/';
+    }
+    
+    session_set_cookie_params([
+        'path' => $cookiePath,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
     session_start();
 }
 
 function auth_user_role(): string
 {
-    return isset($_SESSION['role']) ? (string)$_SESSION['role'] : '';
+    return isset($_SESSION['role']) ? (string) $_SESSION['role'] : '';
 }
 
 function auth_is_superadmin(): bool
@@ -32,15 +47,16 @@ function auth_user_id(): string
 {
     // For normal users: numeric id in users table. For superadmin: string marker.
     if (isset($_SESSION['user_id'])) {
-        return (string)$_SESSION['user_id'];
+        return (string) $_SESSION['user_id'];
     }
     return '';
 }
 
 function auth_user_id_int(): int
 {
-    if (!auth_is_user()) return 0;
-    $id = (int)auth_user_id();
+    if (!auth_is_user())
+        return 0;
+    $id = (int) auth_user_id();
     return $id > 0 ? $id : 0;
 }
 

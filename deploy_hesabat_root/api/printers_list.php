@@ -1,15 +1,16 @@
 <?php
-error_reporting(0);
+error_reporting(E_ALL & ~E_NOTICE);
+ini_set('display_errors', '0');
 header('Content-Type: application/json');
 
-@include(__DIR__ . '/../config.php');
-@include(__DIR__ . '/_auth.php');
+include(__DIR__ . '/../config.php');
+include(__DIR__ . '/_auth.php');
 
 require_role(['superadmin','admin','user']);
 
 if (!isset($con) || !($con instanceof mysqli) || $con->connect_errno) {
     http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => 'Database connection failed']);
+    echo json_encode(['ok' => false, 'error' => 'Database connection failed: ' . ($con->connect_error ?? 'Check config.php')]);
     exit;
 }
 

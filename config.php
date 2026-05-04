@@ -10,4 +10,3 @@ if (!$con->connect_errno) {
     $con->set_charset('utf8mb4');
     $con->query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
 }
-?>
